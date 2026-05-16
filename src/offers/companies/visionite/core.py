@@ -32,6 +32,35 @@ class TotalCompensation:
     table_tax: int
     net_salary: int
 
+    def pretty_print_compensation(self) -> None:
+        table = Table(
+            show_header=False,
+            show_lines=True,
+            box=box.HORIZONTALS,
+            leading=0,
+            padding=(0, 2),
+        )
+        table.add_column("Field")
+        table.add_column("Amount", justify="right")
+
+        table.add_row("Egen intäkt", f"{self.income:_} kr".replace("_", " "), style="bold")
+        table.add_row("Skatter och avgifter", "", style="bold")
+        table.add_row("Semesteravsättning", f"{self.holiday_provision:_} kr".replace("_", " "))
+        table.add_row(
+            "Arbetsverktyg & Trygghetspaket", f"{self.fixed_costs:_} kr".replace("_", " "),
+        )
+        table.add_row("Arbetsgivaravgifter", f"{self.employers_fee:_} kr".replace("_", " "))
+        table.add_row("Löneskatt på tjänstepension", f"{self.pension_tax:_} kr".replace("_", " "))
+        table.add_row("Bruttolön", f"{self.gross_salary:_} kr".replace("_", " "), style="bold")
+        table.add_row("Tjänstepension", f"{self.pension:_} kr".replace("_", " "), style="bold")
+        table.add_row(
+            "Sparande till Visionitekonto", f"{self.set_aside:_} kr".replace("_", " "),style="bold"
+        )
+        table.add_row("Bilkostnad", f"{self.car:_} kr".replace("_", " "))
+        table.add_row("Tabellskatt", f"{self.table_tax:_} kr".replace("_", " "))
+        table.add_row("Nettolön", f"{self.net_salary:_} kr".replace("_", " "), style="bold")
+        Console().print(table)
+
 
 def calc_compensation(income: int, pension: int, pot: int, car: int = 0) -> TotalCompensation:
     """Calculate the gross salary.
@@ -82,32 +111,6 @@ def calc_compensation(income: int, pension: int, pot: int, car: int = 0) -> Tota
         table_tax=round(table_tax),
         net_salary=round(net_salary),
     )
-
-def print_table(obj: TotalCompensation) -> None:
-    table = Table(
-        show_header=False,
-        show_lines=True,
-        box=box.HORIZONTALS,
-        leading=0,
-        padding=(0, 2),
-    )
-    table.add_column("Field")
-    table.add_column("Amount", justify="right")
-
-    table.add_row("Egen intäkt", f"{obj.income:_} kr".replace("_", " "), style="bold")
-    table.add_row("Skatter och avgifter", "", style="bold")
-    table.add_row("Semesteravsättning", f"{obj.holiday_provision:_} kr".replace("_", " "))
-    table.add_row("Arbetsverktyg & Trygghetspaket", f"{obj.fixed_costs:_} kr".replace("_", " "))
-    table.add_row("Arbetsgivaravgifter", f"{obj.employers_fee:_} kr".replace("_", " "))
-    table.add_row("Löneskatt på tjänstepension", f"{obj.pension_tax:_} kr".replace("_", " "))
-    table.add_row("Bruttolön", f"{obj.gross_salary:_} kr".replace("_", " "), style="bold")
-    table.add_row("Tjänstepension", f"{obj.pension:_} kr".replace("_", " "), style="bold")
-    table.add_row("Sparande till Visionite-konto", f"{obj.set_aside:_} kr".replace("_", " "), style="bold")
-    table.add_row("Bilkostnad", f"{obj.car:_} kr".replace("_", " "))
-    table.add_row("Tabellskatt", f"{obj.table_tax:_} kr".replace("_", " "))
-    table.add_row("Nettolön", f"{obj.net_salary:_} kr".replace("_", " "), style="bold")
-
-    Console().print(table)
 
 def find_itp1_pension(income: int, pot: int, car: int, verbose: int = 0) -> int:
     """Find the corresponding ITP1 pension for a given salary."""
