@@ -2,6 +2,7 @@
 
 from .loader import load_toml
 
+
 def itp1(salary: int) -> int:
     """Calculate the ITP1 pension for a given salary."""
     assumptions = load_toml("assumptions")

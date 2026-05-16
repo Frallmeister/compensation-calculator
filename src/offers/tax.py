@@ -1,7 +1,7 @@
 """Tax utils."""
 
+import functools
 from dataclasses import dataclass
-from functools import lru_cache
 
 import numpy as np
 import pandas as pd
@@ -17,7 +17,7 @@ class TaxLookup:
     tax: np.ndarray
     days: np.ndarray
 
-    def tax_for_salary(self, salary: int) -> int:
+    def tax_for_salary(self, salary: float) -> int:
         """Return tax for a single gross salary."""
         idx = int(np.searchsorted(self.upper, salary, side="left"))
         tax_value = self.tax[idx]
@@ -34,7 +34,7 @@ class TaxLookup:
         return tax_array.round().astype(int)
 
 
-@lru_cache(maxsize=None)
+@functools.cache
 def get_tax_lookup(table_no: int = 33) -> TaxLookup:
     """Load and compile one tax table for fast repeated lookups."""
     df_tax = load_tax_table(table_no=table_no).fillna(np.inf)
@@ -45,7 +45,7 @@ def get_tax_lookup(table_no: int = 33) -> TaxLookup:
     )
 
 
-def tax_for_salary(salary: int, table_no: int = 33) -> int:
+def tax_for_salary(salary: float, table_no: int = 33) -> int:
     """Return tax for one gross salary using a cached tax table."""
     return get_tax_lookup(table_no=table_no).tax_for_salary(salary)
 

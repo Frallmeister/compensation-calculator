@@ -1,7 +1,7 @@
 """Functions pertaining to Visionite."""
 
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
 
 import numpy as np
 from rich import box
@@ -54,7 +54,7 @@ class TotalCompensation:
         table.add_row("Bruttolön", f"{self.gross_salary:_} kr".replace("_", " "), style="bold")
         table.add_row("Tjänstepension", f"{self.pension:_} kr".replace("_", " "), style="bold")
         table.add_row(
-            "Sparande till Visionitekonto", f"{self.set_aside:_} kr".replace("_", " "),style="bold"
+            "Sparande till Visionitekonto", f"{self.set_aside:_} kr".replace("_", " "),style="bold",
         )
         table.add_row("Bilkostnad", f"{self.car:_} kr".replace("_", " "))
         table.add_row("Tabellskatt", f"{self.table_tax:_} kr".replace("_", " "))

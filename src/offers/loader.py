@@ -1,8 +1,8 @@
 """Module with functions used to load data."""
 
 import logging
-from pathlib import Path
 import tomllib
+from pathlib import Path
 from typing import Any, Literal, overload
 
 import pandas as pd
@@ -50,24 +50,23 @@ def load_tax_table(table_no: int|None=None) -> pd.DataFrame:
     return df
 
 @overload
-def load_toml(source: TomlKey) -> dict[str, Any]:
-    """Load a known TOML config by key."""
+def load_toml(source: TomlKey) -> dict[str, Any]: ...
 
 
 @overload
-def load_toml(source: Path) -> dict[str, Any]:
-    """Load a TOML config from an explicit path."""
+def load_toml(source: Path) -> dict[str, Any]: ...
 
 
-def load_toml(source: TomlKey | Path | str) -> dict[str, Any]:
+def load_toml(source: TomlKey | Path) -> dict[str, Any]:
     """Load a TOML config by known key or explicit path."""
     if isinstance(source, Path):
         file_path = source
     else:
-        file_path = KNOWN_TOML_FILES.get(source)
-        if file_path is None:
+        if source not in KNOWN_TOML_FILES:
             allowed = ", ".join(sorted(KNOWN_TOML_FILES))
-            raise ValueError(f"Unknown TOML key {source!r}. Expected one of: {allowed}")
+            msg = f"Unknown TOML key {source!r}. Expected one of: {allowed}"
+            raise ValueError(msg)
+        file_path = KNOWN_TOML_FILES[source]
 
     with file_path.open("rb") as file:
         return tomllib.load(file)
