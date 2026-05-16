@@ -43,5 +43,7 @@ src = ["src", "tests"]
 select = ["ALL"]
 ignore = [
     "T201",  # Remove print statements
+    "D101",  # Missing docstring in public class
+    "D102",  # Missing docstring in public method
     "D103"  # Missing docstring in public function
 ]
