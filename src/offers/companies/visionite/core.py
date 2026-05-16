@@ -32,7 +32,7 @@ class TotalCompensation:
     table_tax: int
     net_salary: int
 
-    def pretty_print_compensation(self) -> None:
+    def print_table(self) -> None:
         table = Table(
             show_header=False,
             show_lines=True,
