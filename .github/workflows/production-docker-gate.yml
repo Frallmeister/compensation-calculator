@@ -1,0 +1,46 @@
+name: Production Docker Gate
+
+on:
+  pull_request:
+    branches:
+      - production
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref (branch, tag, or SHA) to test
+        required: false
+        default: production
+
+jobs:
+  docker-smoke:
+    name: Docker startup smoke
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || github.sha }}
+
+      - name: Build Docker image
+        run: docker build -t offers-app-ci .
+
+      - name: Start container
+        run: docker run -d --rm -p 8050:8050 --name offers-app-ci offers-app-ci
+
+      - name: Verify app responds
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:8050/robots.txt | grep -q "Disallow: /"; then
+              curl -fsS http://127.0.0.1:8050/ > /dev/null
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "App did not become ready in time"
+          docker logs offers-app-ci
+          exit 1
+
+      - name: Stop container
+        if: always()
+        run: docker stop offers-app-ci || true

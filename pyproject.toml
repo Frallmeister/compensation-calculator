@@ -33,6 +33,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 offers = ["py.typed"]
+web = ["py.typed"]
 
 [tool.pyright]
 include = ["src", "tests"]

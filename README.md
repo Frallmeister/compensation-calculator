@@ -101,3 +101,14 @@ Common setup:
 
 - Use a CNAME when deploying to a subdomain (for example `app.yourdomain.com`).
 - For apex domain (`yourdomain.com`), use the A/ALIAS records Render provides.
+
+## Crawler policy
+
+The app serves a `robots.txt` endpoint at `/robots.txt` with:
+
+```txt
+User-agent: *
+Disallow: /
+```
+
+This tells compliant crawlers not to crawl/index the dashboard.
