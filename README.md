@@ -37,6 +37,14 @@ uv run offers-dash
 
 Open `http://localhost:8050`.
 
+## Run tests
+
+Run the unit tests from the repository root:
+
+```bash
+uv run python -m unittest discover -s tests -p "test_*.py"
+```
+
 ## Run locally with Docker
 
 Build the image from the repository root:
