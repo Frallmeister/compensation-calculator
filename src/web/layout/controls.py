@@ -1,6 +1,7 @@
 """Input controls for the Dash dashboard."""
 
 from dash import dcc, html
+from web.ids import Ids
 
 
 def build_comparison_controls(
@@ -19,7 +20,7 @@ def build_comparison_controls(
                         style={"fontWeight": "600"},
                     ),
                     dcc.Input(
-                        id="salary-input",
+                        id=Ids.SALARY_INPUT,
                         type="number",
                         min=10000,
                         step=500,
@@ -36,7 +37,7 @@ def build_comparison_controls(
                         style={"fontWeight": "600"},
                     ),
                     dcc.Dropdown(
-                        id="tax-table-dropdown",
+                        id=Ids.TAX_TABLE_DROPDOWN,
                         options=[
                             {"label": str(no), "value": int(no)}
                             for no in tax_tables

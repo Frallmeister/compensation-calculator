@@ -1,12 +1,13 @@
 """Table builders for the Dash dashboard."""
 
 from dash import dash_table
+from web.ids import Ids
 
 
 def build_summary_table() -> dash_table.DataTable:
     """Create the offer summary table."""
     return dash_table.DataTable(
-        id="summary-table",
+        id=Ids.SUMMARY_TABLE,
         columns=[
             {"name": "Company", "id": "Company"},
             {"name": "Monthly salary", "id": "Monthly salary", "type": "numeric"},
