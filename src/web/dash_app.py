@@ -1,5 +1,6 @@
 """Minimal Dash app for comparing offer value side by side."""
 
+import hmac
 import os
 from dataclasses import dataclass
 from typing import Any
@@ -7,6 +8,7 @@ from typing import Any
 import pandas as pd
 import plotly.express as px
 from dash import Dash, Input, Output, dash_table, dcc, html
+from flask import Response, request
 
 from offers.benefits import vacation_value_rate
 from offers.loader import ensure_refined_skattetabell, load_tax_table, load_toml
@@ -16,6 +18,7 @@ from offers.tax import tax_for_salary
 CONFIG_KEYS = ("visionite", "volvo_cars")
 PRIMARY_COLOR = "#0f766e"
 SECONDARY_COLOR = "#f59e0b"
+EXEMPT_PATHS = frozenset(("/healthz", "/robots.txt"))
 
 
 @dataclass(frozen=True)
@@ -273,6 +276,57 @@ def create_app() -> Dash:
 
 app = create_app()
 server = app.server
+
+
+def _auth_credentials() -> tuple[str, str] | None:
+    """Return configured credentials, or None when auth is disabled."""
+    username = os.getenv("DASH_USERNAME")
+    password = os.getenv("DASH_PASSWORD")
+    if not username or not password:
+        return None
+    return username, password
+
+
+def _unauthorized() -> Response:
+    """Return a Basic Auth challenge response."""
+    response = Response("Authentication required\n", status=401, mimetype="text/plain")
+    response.headers["WWW-Authenticate"] = 'Basic realm="Dashboard"'
+    return response
+
+
+@server.before_request
+def require_basic_auth() -> Response | None:
+    """Protect dashboard routes with HTTP Basic Auth when configured."""
+    if request.path in EXEMPT_PATHS:
+        return None
+
+    credentials = _auth_credentials()
+    if credentials is None:
+        return None
+
+    auth = request.authorization
+    if auth is None or auth.type.lower() != "basic":
+        return _unauthorized()
+
+    expected_username, expected_password = credentials
+    if not hmac.compare_digest(auth.username or "", expected_username):
+        return _unauthorized()
+    if not hmac.compare_digest(auth.password or "", expected_password):
+        return _unauthorized()
+    return None
+
+
+@server.route("/healthz", methods=["GET"])
+def healthz() -> Response:
+    """Return liveness status for platform health checks."""
+    return Response("ok\n", mimetype="text/plain")
+
+
+@server.route("/robots.txt", methods=["GET"])
+def robots_txt() -> Response:
+    """Disallow crawler indexing for this dashboard."""
+    content = "User-agent: *\nDisallow: /\n"
+    return Response(content, mimetype="text/plain; charset=utf-8")
 
 
 def main() -> None:

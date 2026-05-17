@@ -90,6 +90,22 @@ Deploy steps:
 3. Render reads `render.yaml` and builds using the `Dockerfile`.
 4. After deploy finishes, open the generated Render URL and verify `/` responds.
 
+## Authentication
+
+The dashboard supports HTTP Basic Auth via environment variables:
+
+- `DASH_USERNAME`
+- `DASH_PASSWORD`
+
+Behavior:
+
+- If both variables are set, the dashboard routes require authentication.
+- If one or both variables are missing, auth is disabled.
+- `/robots.txt` and `/healthz` remain unauthenticated.
+
+For Render, set both variables in the service Environment settings.
+The service health check uses `/healthz`.
+
 ## Connect custom domain (GoDaddy -> Render)
 
 1. In Render service settings, open Custom Domains and add your domain/subdomain.
@@ -101,3 +117,14 @@ Common setup:
 
 - Use a CNAME when deploying to a subdomain (for example `app.yourdomain.com`).
 - For apex domain (`yourdomain.com`), use the A/ALIAS records Render provides.
+
+## Crawler policy
+
+The app serves a `robots.txt` endpoint at `/robots.txt` with:
+
+```txt
+User-agent: *
+Disallow: /
+```
+
+This tells compliant crawlers not to crawl/index the dashboard.
