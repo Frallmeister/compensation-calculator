@@ -2,6 +2,7 @@
 
 from dash import dcc, html
 
+from web.ids import Ids
 from web.layout.controls import build_comparison_controls
 from web.layout.tables import build_summary_table
 
@@ -43,7 +44,7 @@ def create_layout(
                 default_table=default_table,
             ),
             html.Div(
-                id="summary-cards",
+                id=Ids.SUMMARY_CARDS,
                 style={
                     "display": "flex",
                     "gap": "14px",
@@ -51,7 +52,7 @@ def create_layout(
                     "marginTop": "16px",
                 },
             ),
-            dcc.Graph(id="comparison-figure", style={"marginTop": "16px"}),
+            dcc.Graph(id=Ids.COMPARISON_FIGURE, style={"marginTop": "16px"}),
             build_summary_table(),
         ],
         style={
