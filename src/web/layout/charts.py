@@ -2,13 +2,14 @@
 
 import pandas as pd
 import plotly.express as px
+from plotly.graph_objects import Figure
 from web.view_models import OfferSummary
 
 PRIMARY_COLOR = "#0f766e"
 SECONDARY_COLOR = "#f59e0b"
 
 
-def build_figure(summaries: list[OfferSummary]):
+def build_figure(summaries: list[OfferSummary]) -> Figure:
     """Create grouped bar chart of annual value components."""
     rows = [
         {
