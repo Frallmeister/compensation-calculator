@@ -2,18 +2,15 @@
 
 import os
 
-from dash import Dash, Input, Output, dcc, html
+from dash import Dash, dcc, html
 
 from offers.loader import ensure_refined_skattetabell
 from web.auth import configure_basic_auth
-from web.layout.charts import build_figure
-from web.layout.summary import build_cards
+from web.callbacks.comparison import register_comparison_callbacks
 from web.layout.tables import build_summary_table
 from web.routes import register_routes
 from web.services.comparison import (
-    CONFIG_KEYS,
     available_tax_tables,
-    build_offer_summary,
     default_salary,
 )
 
@@ -89,18 +86,11 @@ def create_app() -> Dash:
         },
     )
 
-    @app.callback(
-        Output("summary-cards", "children"),
-        Output("comparison-figure", "figure"),
-        Output("summary-table", "data"),
-        Input("salary-input", "value"),
-        Input("tax-table-dropdown", "value"),
+    register_comparison_callbacks(
+        app=app,
+        default_salary_value=default_salary_value,
+        default_table=default_table,
     )
-    def update_view(salary: int, table_no: int):
-        salary_value = int(salary or default_salary_value)
-        table_value = int(table_no or default_table)
-        summaries = [build_offer_summary(key, salary_value, table_value) for key in CONFIG_KEYS]
-        return build_cards(summaries), build_figure(summaries), [s.to_row() for s in summaries]
 
     # Register HTTP authentication and URL routes.
     configure_basic_auth(app.server)
