@@ -7,7 +7,7 @@ from dash import Dash, dcc, html
 from offers.loader import ensure_refined_skattetabell
 from web.auth import configure_basic_auth
 from web.callbacks.comparison import register_comparison_callbacks
-from web.layout.tables import build_summary_table
+from web.layout.shell import create_layout
 from web.routes import register_routes
 from web.services.comparison import (
     available_tax_tables,
@@ -23,67 +23,10 @@ def create_app() -> Dash:
     default_table = 33 if 33 in tax_tables else tax_tables[0]
 
     app = Dash(__name__, title="Offer comparison")
-    app.layout = html.Div(
-        [
-            html.Div(
-                [
-                    html.H1(
-                        "Offer Comparison",
-                        style={"margin": "0", "fontSize": "2rem", "fontWeight": "700"},
-                    ),
-                    html.P(
-                        "Quick dashboard for comparing two offers with taxes and benefits.",
-                        style={"margin": "6px 0 0", "color": "#334155"},
-                    ),
-                ],
-                style={"marginBottom": "18px"},
-            ),
-            html.Div(
-                [
-                    html.Div(
-                        [
-                            html.Label("Monthly salary (SEK)", style={"fontWeight": "600"}),
-                            dcc.Input(
-                                id="salary-input",
-                                type="number",
-                                min=10000,
-                                step=500,
-                                value=default_salary_value,
-                                style={"width": "100%", "padding": "8px"},
-                            ),
-                        ],
-                        style={"flex": "1 1 220px"},
-                    ),
-                    html.Div(
-                        [
-                            html.Label("Tax table", style={"fontWeight": "600"}),
-                            dcc.Dropdown(
-                                id="tax-table-dropdown",
-                                options=[{"label": str(no), "value": int(no)} for no in tax_tables],
-                                value=default_table,
-                                clearable=False,
-                            ),
-                        ],
-                        style={"flex": "1 1 220px"},
-                    ),
-                ],
-                style={"display": "flex", "gap": "14px", "flexWrap": "wrap"},
-            ),
-            html.Div(
-                id="summary-cards",
-                style={"display": "flex", "gap": "14px", "flexWrap": "wrap", "marginTop": "16px"},
-            ),
-            dcc.Graph(id="comparison-figure", style={"marginTop": "16px"}),
-            build_summary_table(),
-        ],
-        style={
-            "maxWidth": "1100px",
-            "margin": "0 auto",
-            "padding": "24px 18px 40px",
-            "fontFamily": "'Segoe UI', 'Aptos', sans-serif",
-            "background": "linear-gradient(180deg, #ecfeff 0%, #f8fafc 45%, #ffffff 100%)",
-            "minHeight": "100vh",
-        },
+    app.layout = create_layout(
+        default_salary_value=default_salary_value,
+        tax_tables=tax_tables,
+        default_table=default_table,
     )
 
     register_comparison_callbacks(
