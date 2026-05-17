@@ -13,18 +13,14 @@ def build_header() -> html.Div:
         [
             html.H1(
                 "Offer Comparison",
-                style={
-                    "margin": "0",
-                    "fontSize": "2rem",
-                    "fontWeight": "700",
-                },
+                className="app-title",
             ),
             html.P(
                 "Quick dashboard for comparing two offers with taxes and benefits.",
-                style={"margin": "6px 0 0", "color": "#334155"},
+                className="app-subtitle",
             ),
         ],
-        style={"marginBottom": "18px"},
+        className="app-header",
     )
 
 
@@ -45,25 +41,10 @@ def create_layout(
             ),
             html.Div(
                 id=Ids.SUMMARY_CARDS,
-                style={
-                    "display": "flex",
-                    "gap": "14px",
-                    "flexWrap": "wrap",
-                    "marginTop": "16px",
-                },
+                className="summary-card-grid",
             ),
-            dcc.Graph(id=Ids.COMPARISON_FIGURE, style={"marginTop": "16px"}),
+            dcc.Graph(id=Ids.COMPARISON_FIGURE, className="comparison-figure"),
             build_summary_table(),
         ],
-        style={
-            "maxWidth": "1100px",
-            "margin": "0 auto",
-            "padding": "24px 18px 40px",
-            "fontFamily": "'Segoe UI', 'Aptos', sans-serif",
-            "background": (
-                "linear-gradient(180deg, #ecfeff 0%, "
-                "#f8fafc 45%, #ffffff 100%)"
-            ),
-            "minHeight": "100vh",
-        },
+        className="app-shell",
     )
