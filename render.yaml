@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: compensation-calculator
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /

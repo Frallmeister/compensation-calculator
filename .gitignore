@@ -13,6 +13,8 @@ __pycache__/
 venv/
 env/
 
+data/processed/
+
 build/
 dist/
 *.egg-info/

@@ -23,6 +23,14 @@ KNOWN_TOML_FILES: dict[TomlKey, Path] = {
     "volvo_cars": EMPLOYER_CONFIG_DIR / "volvo_cars.toml",
 }
 
+
+def ensure_refined_skattetabell(force: bool = False) -> Path:
+    """Ensure the processed tax table parquet exists and return its path."""
+    parquet_path = PROCESSED_DATA_DIR / "skattetabell.parquet"
+    if force or not parquet_path.exists():
+        refine_skattetabell()
+    return parquet_path
+
 def refine_skattetabell() -> None:
     """Load the Skatteverket tax table CSV and store as a parquet."""
     file_path = RAW_DATA_DIR / "skattetabell.csv"
@@ -37,14 +45,15 @@ def refine_skattetabell() -> None:
             "Kolumn 1": "tax",
         },
     )
+    PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
     file_destination = PROCESSED_DATA_DIR / "skattetabell.parquet"
     df.to_parquet(file_destination)
     logger.info("Wrote file %s", file_destination.relative_to(PROJECT_ROOT))
 
 
-def load_tax_table(table_no: int|None=None) -> pd.DataFrame:
+def load_tax_table(table_no: int | None = None) -> pd.DataFrame:
     """Load the general tax table."""
-    df = pd.read_parquet(PROCESSED_DATA_DIR / "skattetabell.parquet")
+    df = pd.read_parquet(ensure_refined_skattetabell())
     if table_no:
         df = df.query("table_no == @table_no")
     return df

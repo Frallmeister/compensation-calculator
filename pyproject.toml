@@ -9,6 +9,7 @@ description = "Job offer compensation comparison tools"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "dash>=3.1.1",
     "ipykernel>=7.2.0",
     "jupyter>=1.1.1",
     "matplotlib>=3.10.9",
@@ -20,6 +21,9 @@ dependencies = [
     "rich>=15.0.0",
     "scipy>=1.17.1",
 ]
+
+[project.scripts]
+offers-dash = "web.dash_app:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
