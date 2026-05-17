@@ -1,4 +1,4 @@
-"""Monte Carlo simulation to compare salary withdrawal and postponed salary."""
+"""Monte Carlo simulation for immediate vs deferred withdrawal strategies."""
 
 from dataclasses import dataclass
 
@@ -23,58 +23,59 @@ class SimulationConfig:
 
 @dataclass(frozen=True)
 class SimulationResult:
-    salary_now_values: np.ndarray
-    delayed_salary_values: np.ndarray
+    immediate_withdrawal_values: np.ndarray
+    deferred_withdrawal_values: np.ndarray
     sampled_monthly_profits: np.ndarray
     configs: SimulationConfig
 
     @property
-    def final_salary_now_values(self) -> np.ndarray:
-        """Final-month outcomes for strategy: withdraw as salary now."""
-        return self.salary_now_values[:, -1]
+    def final_immediate_withdrawal_values(self) -> np.ndarray:
+        """Final-month outcomes for the immediate-withdrawal strategy."""
+        return self.immediate_withdrawal_values[:, -1]
 
     @property
-    def final_delayed_salary_values(self) -> np.ndarray:
-        """Final-month outcomes for strategy: keep in pot and withdraw later."""
-        return self.delayed_salary_values[:, -1]
+    def final_deferred_withdrawal_values(self) -> np.ndarray:
+        """Final-month outcomes for the deferred-withdrawal strategy."""
+        return self.deferred_withdrawal_values[:, -1]
 
     @property
-    def spread(self) -> np.ndarray:
-        return self.salary_now_values - self.delayed_salary_values
+    def advantage(self) -> np.ndarray:
+        """Path-wise strategy advantage: immediate minus deferred withdrawal."""
+        return self.immediate_withdrawal_values - self.deferred_withdrawal_values
 
     @property
-    def final_spread(self) -> np.ndarray:
-        """Final-month paired difference: salary-now minus delayed."""
-        return self.final_salary_now_values - self.final_delayed_salary_values
+    def final_advantage(self) -> np.ndarray:
+        """Final-month paired difference: immediate minus deferred withdrawal."""
+        return self.final_immediate_withdrawal_values - self.final_deferred_withdrawal_values
 
     @property
-    def probability_salary_now_wins(self) -> float:
-        return float(np.mean(self.final_spread > 0))
+    def probability_immediate_beats_deferred(self) -> float:
+        return float(np.mean(self.final_advantage > 0))
 
     @property
-    def mean_final_spread(self) -> float:
-        return float(np.mean(self.final_spread))
+    def mean_final_advantage(self) -> int:
+        return round(np.mean(self.final_advantage))
 
     @property
-    def median_final_spread(self) -> float:
-        return float(np.median(self.final_spread))
+    def median_final_advantage(self) -> int:
+        return round(np.median(self.final_advantage))
 
     @property
-    def final_spread_std(self) -> float:
-        return float(np.std(self.final_spread, ddof=1))
+    def final_advantage_std(self) -> float:
+        return float(np.std(self.final_advantage, ddof=1))
 
     @property
     def paired_effect_size(self) -> float:
-        """Paired Cohen's d (dz) for final-month strategy difference."""
-        std = self.final_spread_std
+        """Paired Cohen's d (dz) for final-month strategy advantage."""
+        std = self.final_advantage_std
         if np.isclose(std, 0.0):
             return float(np.nan)
-        return self.mean_final_spread / std
+        return self.mean_final_advantage / std
 
     @property
-    def final_spread_skewness(self) -> float:
-        """Sample skewness of final-month paired difference."""
-        diff = self.final_spread
+    def final_advantage_skewness(self) -> float:
+        """Sample skewness of the final-month strategy advantage."""
+        diff = self.final_advantage
         centered = diff - np.mean(diff)
         m2 = np.mean(centered**2)
         if np.isclose(m2, 0.0):
@@ -96,36 +97,50 @@ class SimulationResult:
 
     @property
     def summary_table(self) -> pd.DataFrame:
-        """Summary stats for final outcomes and paired strategy difference."""
+        """Summary stats for final outcomes and paired strategy advantage."""
         table = pd.DataFrame(
             {
-                "salary_now_final": self._distribution_stats(self.final_salary_now_values),
-                "salary_later_final": self._distribution_stats(self.final_delayed_salary_values),
-                "spread_final": self._distribution_stats(self.final_spread),
+                "immediate_withdrawal_final": self._distribution_stats(
+                    self.final_immediate_withdrawal_values,
+                ),
+                "deferred_withdrawal_final": self._distribution_stats(
+                    self.final_deferred_withdrawal_values,
+                ),
+                "advantage_final": self._distribution_stats(self.final_advantage),
             },
         )
-        table.loc["win_probability_salary_now"] = [
+        table = table.div(1000).round(1)
+
+        table.loc["win_probability_immediate_withdrawal"] = [
             np.nan,
             np.nan,
-            self.probability_salary_now_wins,
+            round(self.probability_immediate_beats_deferred, 2),
         ]
         table.loc["paired_effect_size_dz"] = [
             np.nan,
             np.nan,
-            self.paired_effect_size,
+            round(self.paired_effect_size, 2),
         ]
-        table.loc["spread_skewness"] = [
+        table.loc["advantage_skewness"] = [
             np.nan,
             np.nan,
-            self.final_spread_skewness,
+            round(self.final_advantage_skewness, 2),
         ]
-        return table.round(2)
+        return table
 
 
 @dataclass(frozen=True, slots=True)
 class ExperimentRun:
-    salary_now_results: np.ndarray
-    salary_later_results: np.ndarray
+    immediate_withdrawal_results: np.ndarray
+    deferred_withdrawal_results: np.ndarray
+
+    @property
+    def salary_now_results(self) -> np.ndarray:
+        return self.immediate_withdrawal_results
+
+    @property
+    def salary_later_results(self) -> np.ndarray:
+        return self.deferred_withdrawal_results
 
 class StrategyMonteCarlo:
     """Monte Carlo simulation comparing different strategies."""
@@ -143,18 +158,18 @@ class StrategyMonteCarlo:
     def run(self) -> SimulationResult:
         """Run the simulation."""
         cfg = self.config
-        salary_now_values = np.zeros((cfg.n_simulations, cfg.n_months))
-        delayed_salary_values = np.zeros((cfg.n_simulations, cfg.n_months))
+        immediate_withdrawal_values = np.zeros((cfg.n_simulations, cfg.n_months))
+        deferred_withdrawal_values = np.zeros((cfg.n_simulations, cfg.n_months))
         sampled_monthly_profits = self._monthly_returns()
 
         for isim, profits in enumerate(sampled_monthly_profits):
             res = self._run_one_experiment(profits=profits)
-            salary_now_values[isim] = res.salary_now_results
-            delayed_salary_values[isim] = res.salary_later_results
+            immediate_withdrawal_values[isim] = res.immediate_withdrawal_results
+            deferred_withdrawal_values[isim] = res.deferred_withdrawal_results
 
         return SimulationResult(
-            salary_now_values=salary_now_values,
-            delayed_salary_values=delayed_salary_values,
+            immediate_withdrawal_values=immediate_withdrawal_values,
+            deferred_withdrawal_values=deferred_withdrawal_values,
             sampled_monthly_profits=sampled_monthly_profits,
             configs=cfg,
         )
@@ -172,14 +187,14 @@ class StrategyMonteCarlo:
         return 1.0 + rng.normal(loc=loc, scale=scale, size=size)
 
     def _run_one_experiment(self, profits: np.ndarray) -> ExperimentRun:
-        salary_now_results = self._simulate_salary_now(profits)
-        salary_later_results = self._simulate_salary_later(profits)
+        immediate_withdrawal_results = self._simulate_immediate_withdrawal(profits)
+        deferred_withdrawal_results = self._simulate_deferred_withdrawal(profits)
         return ExperimentRun(
-            salary_now_results=salary_now_results,
-            salary_later_results=salary_later_results,
+            immediate_withdrawal_results=immediate_withdrawal_results,
+            deferred_withdrawal_results=deferred_withdrawal_results,
         )
 
-    def _simulate_salary_now(self, profits: np.ndarray) -> np.ndarray:
+    def _simulate_immediate_withdrawal(self, profits: np.ndarray) -> np.ndarray:
         cfg = self.config
 
         # Assuming the same salary each month
@@ -200,7 +215,7 @@ class StrategyMonteCarlo:
             total_savings[i] += portfolio
         return total_savings
 
-    def _simulate_salary_later(self, profits: np.ndarray) -> np.ndarray:
+    def _simulate_deferred_withdrawal(self, profits: np.ndarray) -> np.ndarray:
         cfg = self.config
 
         portfolio = 0.0
@@ -231,21 +246,3 @@ class StrategyMonteCarlo:
             accumulated_salary += compensation.net_salary
             total_savings[imonth] = accumulated_salary + portfolio
         return total_savings
-
-if __name__ == "__main__":
-    config = SimulationConfig(
-        total_income=120960,
-        pension=7332,
-        car_cost=0,
-        monthly_salary_investment=2500,
-        monthly_mean_return=1.20 ** (1/12) - 1,
-        monthly_volatility=0.15 / 12**0.5,
-        months_between_withdrawals=4,
-        n_months=12,
-        n_simulations=1,
-    )
-
-    sim = StrategyMonteCarlo(config)
-    res = sim.run()
-
-    print(res)

@@ -45,5 +45,6 @@ ignore = [
     "T201",  # Remove print statements
     "D101",  # Missing docstring in public class
     "D102",  # Missing docstring in public method
-    "D103"  # Missing docstring in public function
+    "D103",  # Missing docstring in public function
+    "B905",  # Built-in function zip used without strict
 ]
