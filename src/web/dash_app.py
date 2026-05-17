@@ -7,6 +7,7 @@ from typing import Any
 import pandas as pd
 import plotly.express as px
 from dash import Dash, Input, Output, dash_table, dcc, html
+from flask import Response
 
 from offers.benefits import vacation_value_rate
 from offers.loader import ensure_refined_skattetabell, load_tax_table, load_toml
@@ -273,6 +274,13 @@ def create_app() -> Dash:
 
 app = create_app()
 server = app.server
+
+
+@server.route("/robots.txt", methods=["GET"])
+def robots_txt() -> Response:
+    """Disallow crawler indexing for this dashboard."""
+    content = "User-agent: *\nDisallow: /\n"
+    return Response(content, mimetype="text/plain; charset=utf-8")
 
 
 def main() -> None:
