@@ -17,4 +17,4 @@ RUN uv run python -c "from offers.loader import refine_skattetabell; refine_skat
 
 EXPOSE 8050
 
-CMD ["sh", "-c", "uv run python -m web.dash_app"]
+CMD ["sh", "-c", "uv run gunicorn web.dash_app:server --bind 0.0.0.0:${PORT:-8050} --workers ${WEB_CONCURRENCY:-2} --threads ${WEB_THREADS:-4} --timeout 120"]
