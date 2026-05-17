@@ -1,8 +1,9 @@
 """Minimal Dash app for comparing offer value side by side."""
 
 import os
+from pathlib import Path
 
-from dash import Dash, dcc, html
+from dash import Dash
 
 from offers.loader import ensure_refined_skattetabell
 from web.auth import configure_basic_auth
@@ -15,6 +16,8 @@ from web.services.comparison import (
 )
 
 
+ASSETS_DIR = Path(__file__).parent / "assets"
+
 def create_app() -> Dash:
     """Create and configure the Dash app."""
     ensure_refined_skattetabell()
@@ -22,7 +25,11 @@ def create_app() -> Dash:
     tax_tables = available_tax_tables()
     default_table = 33 if 33 in tax_tables else tax_tables[0]
 
-    app = Dash(__name__, title="Offer comparison")
+    app = Dash(
+        __name__,
+        title="Offer comparison",
+        assets_folder=str(ASSETS_DIR),
+    )
     app.layout = create_layout(
         default_salary_value=default_salary_value,
         tax_tables=tax_tables,

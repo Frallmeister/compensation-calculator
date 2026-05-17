@@ -17,7 +17,7 @@ def build_comparison_controls(
                 [
                     html.Label(
                         "Monthly salary (SEK)",
-                        style={"fontWeight": "600"},
+                        className="control-label",
                     ),
                     dcc.Input(
                         id=Ids.SALARY_INPUT,
@@ -25,16 +25,16 @@ def build_comparison_controls(
                         min=10000,
                         step=500,
                         value=default_salary_value,
-                        style={"width": "100%", "padding": "8px"},
+                        className="salary-input",
                     ),
                 ],
-                style={"flex": "1 1 220px"},
+                className="control-field",
             ),
             html.Div(
                 [
                     html.Label(
                         "Tax table",
-                        style={"fontWeight": "600"},
+                        className="control-label",
                     ),
                     dcc.Dropdown(
                         id=Ids.TAX_TABLE_DROPDOWN,
@@ -46,8 +46,8 @@ def build_comparison_controls(
                         clearable=False,
                     ),
                 ],
-                style={"flex": "1 1 220px"},
+                className="control-field",
             ),
         ],
-        style={"display": "flex", "gap": "14px", "flexWrap": "wrap"},
+        className="control-grid",
     )
