@@ -70,7 +70,7 @@ body {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-rows: repeat(9, 1fr);
   gap: 15px;
   width: 100%;
   max-width: var(--container-width);
@@ -98,36 +98,69 @@ body {
 /* Compensation table */
 .card-widgets {
   grid-column: 1 / 4;
-  grid-row: 1 / 7
-}
-
-.card-table-display {
-  grid-column: 1 / 4;
-  grid-row: 4 / 7;
+  grid-row: 1 / 10;
 }
 
 /* Monte-Carlo simulation */
 .card-table {
   grid-column: 4 / 7;
-  grid-row: 1 / 4;
+  grid-row: 1 / 6;
 }
 
 .card-mc-timeseries {
   grid-column: 7 / 13;
-  grid-row: 1 / 4;
+  grid-row: 1 / 6;
 }
 
 .card-mc-final-dist {
   grid-column: 4 / 7;
-  grid-row: 4 / 7;
+  grid-row: 6 / 10;
 }
 
 .card-mc-advantage {
   grid-column: 7 / 10;
-  grid-row: 4 / 7;
+  grid-row: 6 / 10;
 }
 
 .card-mc-return-dist {
   grid-column: 10 / 13;
-  grid-row: 4 / 7;
+  grid-row: 6 / 10;
+}
+
+
+/* TABLE */
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+}
+
+.comp-table-row {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comp-table-row:last-child {
+  border-bottom: none;
+}
+
+.comp-table-label,
+.comp-table-amount {
+  padding: 2px 14px;
+  /* font-size: 0.95rem; */
+  line-height: 1.4;
+}
+
+.comp-table-label {
+  text-align: left;
+}
+
+.comp-table-amount {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.comp-table-row-bold .comp-table-label,
+.comp-table-row-bold .comp-table-amount {
+  font-weight: 700;
 }
