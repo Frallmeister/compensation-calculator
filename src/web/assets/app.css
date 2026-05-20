@@ -127,6 +127,94 @@ body {
   grid-row: 6 / 10;
 }
 
+/* CONTROL PANEL */
+
+.control-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: 0.9rem;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.control-label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-field {
+    min-width: 100px;
+    height: 30px;
+    padding: 3px 5px;
+    font-size: 0.9rem;
+
+    border: 1px solid var(--muted);
+    border-radius: 3px;
+
+    color: var(--text-color);
+    background: var(--surface-color);
+
+    font-variant-numeric: tabular-nums;
+
+    transition:
+        border-color 120ms ease,
+        box-shadow 120ms ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--Dash-Fill-Interactive-Strong, #636efa);
+    box-shadow: 0 0 0 3px color-mix(
+        in srgb,
+        var(--Dash-Fill-Interactive-Strong, #636efa) 18%,
+        transparent
+    );
+}
+
+.input-suffix {
+    min-width: 40px;
+    /* font-size: 0.85rem; */
+    color: var(--muted);
+}
+
+.button {
+    margin: 10px 0px;
+    height: 34px;
+
+    border: none;
+    border-radius: 6px;
+
+    font-weight: 500;
+    font-size: 0.9rem;
+
+    color: white;
+    background: var(--Dash-Fill-Interactive-Strong, #636efa);
+
+    cursor: pointer;
+}
+
+.button:hover {
+    filter: brightness(0.95);
+}
+
+.mc-control-block {
+  margin-top: 20px;
+}
+
 
 /* TABLE */
 .comp-table {
