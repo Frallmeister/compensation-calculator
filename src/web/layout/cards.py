@@ -180,7 +180,10 @@ def monthly_return_distribution() -> html.Div:
     return html.Div(
         [
             html.H1("Monthly return distribution"),
-            html.Div(id=Ids.MONTHLY_RETURN_DIST),
+            html.Div(
+                id=Ids.MONTHLY_RETURN_DIST,
+                className="graph-container",
+            ),
         ],
         className="card card-mc-return-dist",
     )

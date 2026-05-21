@@ -1,7 +1,5 @@
 """Table builders for the Dash dashboard."""
 
-from web.ids import Ids
-
 from dash import html
 
 from offers.companies.visionite import TotalCompensation
