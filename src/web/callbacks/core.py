@@ -17,6 +17,7 @@ def register_callbacks(
         State(Ids.HOURLY_RATE, "value"),
         State(Ids.PENSION, "value"),
         State(Ids.DEFERRED_INCOME, "value"),
+        prevent_initial_call=True,
     )
     def update_compensation_table(
         n_clicks: int,
@@ -39,6 +40,7 @@ def register_callbacks(
         Input(Ids.SIMULATION_BUTTON, "n_clicks"),
         State(Ids.MONTHLY_RETURN, "value"),
         State(Ids.MONTHLY_VOLATILITY, "value"),
+        prevent_initial_call=True,
     )
     def plot_monthyl_return_figure(n_clicks: int, mean: float, std: float) -> dcc.Graph:
         return build_return_dist_plot(mean=mean, std=std)
