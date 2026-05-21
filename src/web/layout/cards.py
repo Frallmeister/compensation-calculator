@@ -9,8 +9,8 @@ def numeric_input_group(
     label: str,
     input_id: str,
     value: float,
-    min_value: int = 0,
-    max_value: int | None = None,
+    min_value: float = 0,
+    max_value: float | None = None,
     step: float = 1,
     suffix: str | None = None,
 ) -> html.Div:
@@ -106,7 +106,7 @@ def control_panel() -> html.Div:
                             numeric_input_group(
                                 label="Monthly volatility:",
                                 input_id=Ids.MONTHLY_VOLATILITY,
-                                min_value=0.0001,
+                                min_value=0.1,
                                 value=4,
                                 step=0.1,
                                 suffix="%",
@@ -131,6 +131,7 @@ def control_panel() -> html.Div:
                                 "Run simulation",
                                 id=Ids.SIMULATION_BUTTON,
                                 className="button simulation-button",
+                                disabled=True,
                             ),
                         ],
                     ),
