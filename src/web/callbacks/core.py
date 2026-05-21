@@ -1,6 +1,6 @@
 """Callbacks for the offer comparison dashboard."""
 
-from dash import Dash, dcc, html, Input, Output, State
+from dash import Dash, Input, Output, State, dcc, html
 from offers.companies.visionite import calc_compensation
 from web.ids import Ids
 from web.layout.charts import build_return_dist_plot
