@@ -7,6 +7,8 @@ from web.layout.charts import build_return_dist_plot
 from web.layout.tables import build_total_compensation_table
 
 
+MONTHLY_BILLABLE_HOURS = 134.4
+
 def register_callbacks(
     app: Dash,
 ) -> None:
@@ -25,7 +27,7 @@ def register_callbacks(
         pension: int,
         deferred: int,
     ) -> html.Table:
-        total_income = round(134.4 * hourly_rate)
+        total_income = round(MONTHLY_BILLABLE_HOURS * hourly_rate)
         total_compensation = calc_compensation(
             income=total_income,
             pension=pension,
@@ -42,5 +44,5 @@ def register_callbacks(
         State(Ids.MONTHLY_VOLATILITY, "value"),
         prevent_initial_call=True,
     )
-    def plot_monthyl_return_figure(n_clicks: int, mean: float, std: float) -> dcc.Graph:
+    def plot_monthly_return_figure(n_clicks: int, mean: float, std: float) -> dcc.Graph:
         return build_return_dist_plot(mean=mean, std=std)

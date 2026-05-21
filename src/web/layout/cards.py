@@ -5,7 +5,7 @@ from dash import dcc, html
 from web.ids import Ids
 
 
-def integer_input_group(
+def numeric_input_group(
     label: str,
     input_id: str,
     value: float,
@@ -50,7 +50,7 @@ def control_panel() -> html.Div:
                     html.Div(
                         className="table-control-block",
                         children=[
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Hourly rate:",
                                 input_id=Ids.HOURLY_RATE,
                                 value=900,
@@ -59,7 +59,7 @@ def control_panel() -> html.Div:
                                 suffix="kr/h",
                             ),
 
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Pension:",
                                 input_id=Ids.PENSION,
                                 value=5500,
@@ -68,7 +68,7 @@ def control_panel() -> html.Div:
                                 suffix="kr",
                             ),
 
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Deferred:",
                                 input_id=Ids.DEFERRED_INCOME,
                                 value=0,
@@ -88,7 +88,7 @@ def control_panel() -> html.Div:
                     html.Div(
                         className="mc-control-block",
                         children=[
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Monthly investment:",
                                 input_id=Ids.MONTHLY_INVESTMENT,
                                 value=2500,
@@ -96,14 +96,14 @@ def control_panel() -> html.Div:
                                 step=1,
                                 suffix="kr",
                             ),
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Monthly mean return:",
                                 input_id=Ids.MONTHLY_RETURN,
                                 value=1.5,
                                 step=0.1,
                                 suffix="%",
                             ),
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Monthly volatility:",
                                 input_id=Ids.MONTHLY_VOLATILITY,
                                 min_value=0,
@@ -111,7 +111,7 @@ def control_panel() -> html.Div:
                                 step=0.1,
                                 suffix="%",
                             ),
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Months between withdrawals:",
                                 input_id=Ids.MONTHS_TO_WITHDRAWAL,
                                 min_value=0,
@@ -119,7 +119,7 @@ def control_panel() -> html.Div:
                                 step=1,
                                 suffix=" ",
                             ),
-                            integer_input_group(
+                            numeric_input_group(
                                 label="Months to simulate:",
                                 input_id=Ids.MONTHS_TO_SIMULATE,
                                 min_value=1,
