@@ -14,7 +14,7 @@ class Ids:
     TABLE_BUTTON = "table-button-id"
     MONTHLY_INVESTMENT = "monthly-investment-id"
     MONTHLY_RETURN = "monthly-return-id"
-    MONTHLY_RETURN_DIST = "monthy-return-distribution-id"
+    MONTHLY_RETURN_DIST = "monthly-return-distribution-id"
     MONTHLY_VOLATILITY = "monthly-volatility-id"
     MONTHS_TO_WITHDRAWAL = "months-to-withdrawal-id"
     MONTHS_TO_SIMULATE = "months-to-simulate-id"
