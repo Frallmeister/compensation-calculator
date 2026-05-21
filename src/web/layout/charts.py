@@ -19,7 +19,6 @@ def build_return_dist_plot(mean: float, std: float) -> dcc.Graph:
     fig.update_yaxes(title_text=r"$P(X \le r)$")
     fig.update_xaxes(title_text="<i>r</i> (%)", range=[xmin, xmax])
     fig.update_layout(
-        # height=180,
         margin={
             "t": 0,
             "r": 0,
