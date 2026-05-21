@@ -46,3 +46,12 @@ def register_callbacks(
     )
     def plot_monthly_return_figure(n_clicks: int, mean: float, std: float) -> dcc.Graph:
         return build_return_dist_plot(mean=mean, std=std)
+
+
+    @app.callback(
+        Output(Ids.SIMULATION_BUTTON, "disabled"),
+        Input(Ids.TABLE_BUTTON, "n_clicks"),
+        prevent_initial_call=True,
+    )
+    def enable_simulation_button(n_clicks: int) -> bool:
+        return not n_clicks

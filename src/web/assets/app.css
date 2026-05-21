@@ -226,6 +226,17 @@ body {
     filter: brightness(0.95);
 }
 
+.button:disabled {
+    background: var(--border-color);
+    color: var(--muted);
+    cursor: not-allowed;
+    filter: none;
+}
+
+.button:disabled:hover {
+    filter: none;
+}
+
 .mc-control-block {
   margin-top: 20px;
 }
