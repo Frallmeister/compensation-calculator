@@ -106,7 +106,7 @@ def control_panel() -> html.Div:
                             numeric_input_group(
                                 label="Monthly volatility:",
                                 input_id=Ids.MONTHLY_VOLATILITY,
-                                min_value=0,
+                                min_value=0.0001,
                                 value=4,
                                 step=0.1,
                                 suffix="%",
