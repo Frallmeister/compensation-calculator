@@ -12,11 +12,11 @@ def register_callbacks(
 ) -> None:
     """Register callbacks for the offer comparison view."""
     @app.callback(
-        Output("compensation-table-id", "children"),
-        Input("table-button-id", "n_clicks"),
-        State("hourly-rate-id", "value"),
-        State("pension-id", "value"),
-        State("deferred-id", "value"),
+        Output(Ids.COMPENSATION_TABLE, "children"),
+        Input(Ids.TABLE_BUTTON, "n_clicks"),
+        State(Ids.HOURLY_RATE, "value"),
+        State(Ids.PENSION, "value"),
+        State(Ids.DEFERRED_INCOME, "value"),
     )
     def update_compensation_table(
         n_clicks: int,
@@ -35,10 +35,10 @@ def register_callbacks(
         return build_total_compensation_table(total_compensation)
 
     @app.callback(
-        Output("monthy-return-distribution-id", "children"),
-        Input("simulation-button-id", "n_clicks"),
-        State("monthly-return-id", "value"),
-        State("monthly-volatility-id", "value"),
+        Output(Ids.MONTHLY_RETURN_DIST, "children"),
+        Input(Ids.SIMULATION_BUTTON, "n_clicks"),
+        State(Ids.MONTHLY_RETURN, "value"),
+        State(Ids.MONTHLY_VOLATILITY, "value"),
     )
     def plot_monthyl_return_figure(n_clicks: int, mean: float, std: float) -> dcc.Graph:
         return build_return_dist_plot(mean=mean, std=std)

@@ -2,7 +2,6 @@
 
 from dash import html
 
-from web.ids import Ids
 import web.layout.cards as cards
 
 

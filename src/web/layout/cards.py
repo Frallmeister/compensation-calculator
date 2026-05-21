@@ -2,6 +2,8 @@
 
 from dash import dcc, html
 
+from web.ids import Ids
+
 
 def integer_input_group(
     label: str,
@@ -50,7 +52,7 @@ def control_panel() -> html.Div:
                         children=[
                             integer_input_group(
                                 label="Hourly rate:",
-                                input_id="hourly-rate-id",
+                                input_id=Ids.HOURLY_RATE,
                                 value=900,
                                 min_value=0,
                                 step=1,
@@ -59,7 +61,7 @@ def control_panel() -> html.Div:
 
                             integer_input_group(
                                 label="Pension:",
-                                input_id="pension-id",
+                                input_id=Ids.PENSION,
                                 value=5500,
                                 min_value=0,
                                 step=50,
@@ -68,7 +70,7 @@ def control_panel() -> html.Div:
 
                             integer_input_group(
                                 label="Deferred:",
-                                input_id="deferred-id",
+                                input_id=Ids.DEFERRED_INCOME,
                                 value=0,
                                 min_value=0,
                                 step=1,
@@ -76,7 +78,7 @@ def control_panel() -> html.Div:
                             ),
                             dcc.Button(
                                 "Update table",
-                                id="table-button-id",
+                                id=Ids.TABLE_BUTTON,
                                 className="button table-button",
                             ),
                         ],
@@ -88,7 +90,7 @@ def control_panel() -> html.Div:
                         children=[
                             integer_input_group(
                                 label="Monthly investment:",
-                                input_id="monthly-investment-id",
+                                input_id=Ids.MONTHLY_INVESTMENT,
                                 value=2500,
                                 min_value=0,
                                 step=1,
@@ -96,14 +98,14 @@ def control_panel() -> html.Div:
                             ),
                             integer_input_group(
                                 label="Monthly mean return:",
-                                input_id="monthly-return-id",
+                                input_id=Ids.MONTHLY_RETURN,
                                 value=1.5,
                                 step=0.1,
                                 suffix="%",
                             ),
                             integer_input_group(
                                 label="Monthly volatility:",
-                                input_id="monthly-volatility-id",
+                                input_id=Ids.MONTHLY_VOLATILITY,
                                 min_value=0,
                                 value=4,
                                 step=0.1,
@@ -111,7 +113,7 @@ def control_panel() -> html.Div:
                             ),
                             integer_input_group(
                                 label="Months between withdrawals:",
-                                input_id="months-to-withdrawal-id",
+                                input_id=Ids.MONTHS_TO_WITHDRAWAL,
                                 min_value=0,
                                 value=6,
                                 step=1,
@@ -119,7 +121,7 @@ def control_panel() -> html.Div:
                             ),
                             integer_input_group(
                                 label="Months to simulate:",
-                                input_id="months-to-simulate-id",
+                                input_id=Ids.MONTHS_TO_SIMULATE,
                                 min_value=1,
                                 value=24,
                                 step=1,
@@ -127,7 +129,7 @@ def control_panel() -> html.Div:
                             ),
                             dcc.Button(
                                 "Run simulation",
-                                id="simulation-button-id",
+                                id=Ids.SIMULATION_BUTTON,
                                 className="button simulation-button",
                             ),
                         ],
@@ -142,7 +144,7 @@ def compensation_table() -> html.Div:
     return html.Div(
         [
             html.H1("Compensation"),
-            html.Div(id="compensation-table-id"),
+            html.Div(id=Ids.COMPENSATION_TABLE),
         ],
         className="card card-table",
     )
@@ -178,7 +180,7 @@ def monthly_return_distribution() -> html.Div:
     return html.Div(
         [
             html.H1("Monthly return distribution"),
-            html.Div(id="monthy-return-distribution-id"),
+            html.Div(id=Ids.MONTHLY_RETURN_DIST),
         ],
         className="card card-mc-return-dist",
     )
