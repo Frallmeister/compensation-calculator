@@ -7,7 +7,7 @@ from dash import Dash
 
 from offers.loader import ensure_refined_skattetabell
 from web.auth import configure_basic_auth
-from web.callbacks.comparison import register_comparison_callbacks
+from web.callbacks.core import register_callbacks
 from web.layout.shell import create_layout
 from web.routes import register_routes
 
@@ -25,7 +25,7 @@ def create_app() -> Dash:
     )
     app.layout = create_layout()
 
-    register_comparison_callbacks(app=app)
+    register_callbacks(app=app)
 
     # Register HTTP authentication and URL routes.
     configure_basic_auth(app.server)
