@@ -2,7 +2,7 @@
 
 from dash import html
 
-import web.layout.cards as cards
+from web.layout import cards
 
 
 def create_layout() -> html.Div:
@@ -28,7 +28,7 @@ def create_layout() -> html.Div:
             ),
             html.Footer(
                 [
-                    html.Div("© 2026 Compensation Calculator", className="site-footer-text")
+                    html.Div("© 2026 Compensation Calculator", className="site-footer-text"),
                 ],
                 className="site-footer",
             ),
