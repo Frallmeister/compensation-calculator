@@ -1,11 +1,11 @@
 """Callbacks for the offer comparison dashboard."""
 
-from dash import Dash, html, Input, Output, State
-import dash_ag_grid as dag
-import pandas as pd
+from dash import Dash, dcc, html, Input, Output, State
 from offers.companies.visionite import calc_compensation
 from web.ids import Ids
+from web.layout.charts import build_return_dist_plot
 from web.layout.tables import build_total_compensation_table
+
 
 def register_callbacks(
     app: Dash,
@@ -32,5 +32,13 @@ def register_callbacks(
             car=0,
         )
 
-        table = build_total_compensation_table(total_compensation)
-        return table
+        return build_total_compensation_table(total_compensation)
+
+    @app.callback(
+        Output("monthy-return-distribution-id", "children"),
+        Input("simulation-button-id", "n_clicks"),
+        State("monthly-return-id", "value"),
+        State("monthly-volatility-id", "value"),
+    )
+    def plot_monthyl_return_figure(n_clicks: int, mean: float, std: float) -> dcc.Graph:
+        return build_return_dist_plot(mean=mean, std=std)

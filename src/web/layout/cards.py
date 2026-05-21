@@ -97,7 +97,6 @@ def control_panel() -> html.Div:
                             integer_input_group(
                                 label="Monthly mean return:",
                                 input_id="monthly-return-id",
-                                min_value=0,
                                 value=1.5,
                                 step=0.1,
                                 suffix="%",
@@ -111,7 +110,7 @@ def control_panel() -> html.Div:
                                 suffix="%",
                             ),
                             integer_input_group(
-                                label="Monthly between withdrawals:",
+                                label="Months between withdrawals:",
                                 input_id="months-to-withdrawal-id",
                                 min_value=0,
                                 value=6,
@@ -152,7 +151,7 @@ def monte_carlo_timeseries() -> html.Div:
     return html.Div(
         [
             html.H1("Monte Carlo timeseries"),
-            html.Div("Show timeseries plot here"),
+            html.Div(""),
         ],
         className="card card-mc-timeseries",
     )
@@ -161,7 +160,7 @@ def final_return_distributions() -> html.Div:
     return html.Div(
         [
             html.H1("Final income distributions"),
-            html.Div("Show plot."),
+            html.Div(""),
         ],
         className="card card-mc-final-dist",
     )
@@ -170,7 +169,7 @@ def final_advantage() -> html.Div:
     return html.Div(
         [
             html.H1("Strategy advantage"),
-            html.Div("Show plot."),
+            html.Div(""),
         ],
         className="card card-mc-advantage",
     )
@@ -179,7 +178,7 @@ def monthly_return_distribution() -> html.Div:
     return html.Div(
         [
             html.H1("Monthly return distribution"),
-            html.Div("Show plot."),
+            html.Div(id="monthy-return-distribution-id"),
         ],
         className="card card-mc-return-dist",
     )
