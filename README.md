@@ -45,6 +45,10 @@ Run the unit tests from the repository root:
 uv run python -m unittest discover -s tests -p "test_*.py"
 ```
 
+## UV link mode error
+
+On Windows `uv` sometimes have problems with hard links on files. Fix that by running `$env:UV_LINK_MODE = "copy"` i PowerShell.
+
 ## Run locally with Docker
 
 Build the image from the repository root:
