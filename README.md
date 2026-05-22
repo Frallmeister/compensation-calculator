@@ -84,7 +84,11 @@ Generate or refresh the lockfile explicitly when needed:
 uv lock
 ```
 
-## Deploy to Render
+## Render
+
+Create a Render **Web service** and connect it to this repo and the `production` branch.
+
+### Deploy to Render
 
 This repository includes a `Dockerfile` and `render.yaml`.
 
@@ -97,10 +101,9 @@ How deployment works for data:
 
 Deploy steps:
 
-1. Push the repository to GitHub.
-2. In Render, create a new Blueprint service from the repository.
-3. Render reads `render.yaml` and builds using the `Dockerfile`.
-4. After deploy finishes, open the generated Render URL and verify `/` responds.
+1. Make a pull request to the `production` branch. It will automatically deploy to Render on merge.
+2. Render reads `render.yaml` and builds using the `Dockerfile`.
+3. After deploy finishes, open the generated Render URL and verify `/` responds.
 
 ## Authentication
 
