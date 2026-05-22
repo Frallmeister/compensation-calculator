@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "dash>=3.1.1",
+    "dash-ag-grid>=35.2.0",
     "gunicorn>=26.0.0",
     "ipykernel>=7.2.0",
     "jupyter>=1.1.1",

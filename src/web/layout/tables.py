@@ -1,36 +1,42 @@
 """Table builders for the Dash dashboard."""
 
-from dash import dash_table
-from web.ids import Ids
+from dash import html
+
+from offers.companies.visionite import TotalCompensation
 
 
-def build_summary_table() -> dash_table.DataTable:
-    """Create the offer summary table."""
-    return dash_table.DataTable(
-        id=Ids.SUMMARY_TABLE,
-        columns=[
-            {"name": "Company", "id": "Company"},
-            {"name": "Monthly salary", "id": "Monthly salary", "type": "numeric"},
-            {"name": "Monthly tax", "id": "Monthly tax", "type": "numeric"},
-            {"name": "Monthly net", "id": "Monthly net", "type": "numeric"},
-            {"name": "Annual pension", "id": "Annual pension", "type": "numeric"},
-            {
-                "name": "Annual fixed benefits",
-                "id": "Annual fixed benefits",
-                "type": "numeric",
-            },
-            {
-                "name": "Annual vacation value",
-                "id": "Annual vacation value",
-                "type": "numeric",
-            },
-            {
-                "name": "Annual total value",
-                "id": "Annual total value",
-                "type": "numeric",
-            },
-        ],
-        style_table={"overflowX": "auto", "marginTop": "12px"},
-        style_header={"fontWeight": "700", "backgroundColor": "#f8fafc"},
-        style_cell={"padding": "8px", "textAlign": "left"},
+def format_sek(value: int) -> str:
+    return f"{value:_} kr".replace("_", " ")
+
+
+def build_total_compensation_table(total_compensation: TotalCompensation) -> html.Table:
+    rows = [
+        ("Income to distribute", total_compensation.income, True),
+        ("Vacation allowance", total_compensation.holiday_provision, False),
+        ("Fixed costs", total_compensation.fixed_costs, False),
+        ("Employers fee", total_compensation.employers_fee, False),
+        ("Pension tax", total_compensation.pension_tax, False),
+        ("Pension", total_compensation.pension, True),
+        ("Deferred income", total_compensation.set_aside, True),
+        ("Gross salary", total_compensation.gross_salary, True),
+        ("Income tax", total_compensation.table_tax, False),
+        ("Net salary", total_compensation.net_salary, True),
+    ]
+
+    return html.Table(
+        html.Tbody(
+            [
+                html.Tr(
+                    [
+                        html.Td(label, className="comp-table-label"),
+                        html.Td(format_sek(value), className="comp-table-amount"),
+                    ],
+                    className="comp-table-row comp-table-row-bold"
+                    if is_bold
+                    else "comp-table-row",
+                )
+                for label, value, is_bold in rows
+            ],
+        ),
+        className="comp-table",
     )
