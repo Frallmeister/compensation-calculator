@@ -41,6 +41,15 @@ def apply_card_figure_style(fig: go.Figure) -> go.Figure:
         },
         hovermode="x unified",
         showlegend=False,
+        modebar_remove=[
+            "zoom",
+            "zoomIn",
+            "zoomOut",
+            "pan",
+            "select2d",
+            "lasso2d",
+            "autoScale2d",
+        ],
     )
 
     fig.update_xaxes(
@@ -70,7 +79,69 @@ def apply_card_figure_style(fig: go.Figure) -> go.Figure:
     return fig
 
 
+def build_final_advantage_plot(arr: np.ndarray) -> dcc.Graph:
+    # Calculate cumulative histogram
+    x = np.sort(arr) * 1e-3
+    y = np.arange(1, len(x) + 1) / len(x)
+
+    fig = go.Figure()
+    fig.add_scatter(
+        x=x,
+        y=y,
+        mode="lines",
+        line={
+            "color": "#636efa",
+            "width": 3,
+            "shape": "hv",  # step-like empirical CDF
+        },
+        fill="tozeroy",
+        fillcolor="rgba(99, 110, 250, 0.14)",
+        hovertemplate=(
+            "Value: %{x:,.1f} tkr<br>"
+            "Density: %{y:.0%}"
+            "<extra></extra>"
+        ),
+    )
+
+    idx = np.argmin(np.abs(x))
+    y0 = round(100 * y[idx])
+    fig.add_vline(
+        x=0,
+        line_width=1,
+        line_dash="dash",
+        line_color=CHART_COLORS["reference"],
+        annotation_text=f"0 kr, {y0} %",
+        annotation_position="top",
+        annotation_font={
+            "size": 11,
+            "color": CHART_COLORS["muted"],
+        },
+    )
+
+    fig.update_xaxes(
+        title_text="Δ income (tkr)<br>Immediate salary →"
+    )
+
+    fig.update_yaxes(
+        title_text="Density",
+        tickformat=".0%",
+    )
+
+    fig = apply_card_figure_style(fig)
+    return dcc.Graph(
+        className="card-graph",
+        figure=fig,
+        mathjax=True,
+        responsive=True,
+        config={
+            "responsive": True,
+            "displaylogo": False,
+        },
+    )
+
+
 def build_return_dist_plot(mean: float, std: float) -> dcc.Graph:
+    """Plot the figure that shows how the stochastic monthly return is distributed."""
     xwidth = 3 * std
     xmin = min(mean - xwidth, -20)
     xmax = max(mean + xwidth, 20)
@@ -133,10 +204,5 @@ def build_return_dist_plot(mean: float, std: float) -> dcc.Graph:
         config={
             "responsive": True,
             "displaylogo": False,
-            "modeBarButtonsToRemove": [
-                "select2d",
-                "lasso2d",
-                "autoScale2d",
-            ],
         },
     )
