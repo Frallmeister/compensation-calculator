@@ -1,10 +1,9 @@
 """Chart builders for the dashboard."""
 
-from dash import dcc
 import numpy as np
 import plotly.graph_objects as go
+from dash import dcc
 from scipy import stats
-
 
 CHART_COLORS = {
     "text": "#111827",
@@ -19,7 +18,6 @@ CHART_COLORS = {
 
 def apply_card_figure_style(fig: go.Figure) -> go.Figure:
     """Apply common dashboard-card styling to a Plotly figure."""
-
     fig.update_layout(
         template="plotly_white",
         autosize=True,
@@ -118,9 +116,7 @@ def build_final_advantage_plot(arr: np.ndarray) -> dcc.Graph:
         },
     )
 
-    fig.update_xaxes(
-        title_text="Δ income (tkr)<br>Immediate salary →"
-    )
+    fig.update_xaxes(title_text="Δ income (tkr)<br>Immediate salary →")
 
     fig.update_yaxes(
         title_text="Density",
