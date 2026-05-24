@@ -10,6 +10,7 @@ from web.ids import Ids
 from web.layout.charts import (
     build_final_advantage_plot,
     build_final_income_plot,
+    build_mc_paths_plot,
     build_return_dist_plot,
 )
 from web.layout.tables import build_total_compensation_table
@@ -45,6 +46,19 @@ def register_callbacks(
         )
 
         return build_total_compensation_table(total_compensation)
+
+
+    @app.callback(
+        Output(Ids.MONTE_CARLO_SIMULATION_PATHS, "children"),
+        Input(Ids.MONTE_CARLO_RESULTS_STORE, "data"),
+        prevent_initial_call=True,
+    )
+    def plot_monte_carlo_paths(data: dict):
+        percentiles = data["percentiles"]
+        p5 = np.asarray(percentiles["p5"])
+        p50 = np.asarray(percentiles["p50"])
+        p95 = np.asarray(percentiles["p95"])
+        return build_mc_paths_plot(p5=p5, p50=p50, p95=p95)
 
 
     @app.callback(
