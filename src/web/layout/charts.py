@@ -140,10 +140,15 @@ def build_mc_paths_plot(p5: np.ndarray, p50: np.ndarray, p95: np.ndarray) -> dcc
 
     fig.add_hline(y=0, line_color="black", line_width=1)
 
-    fig.update_xaxes(title_text="Months")
+    fig = apply_card_figure_style(fig)
+    fig.update_xaxes(
+        title_text="Months",
+        tickmode="linear",
+        tick0=0,
+        dtick=12,
+    )
     fig.update_yaxes(title_text="Advantage of <br>immediate withdrawal (kr)")
 
-    fig = apply_card_figure_style(fig)
     return dcc.Graph(
         className="card-graph",
         figure=fig,

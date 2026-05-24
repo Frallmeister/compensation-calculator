@@ -1,10 +1,9 @@
 """Callbacks for the offer comparison dashboard."""
 
-from dash import Dash, Input, Output, State, dcc, html
 import numpy as np
-from offers.companies.visionite import (
-    calc_compensation,
-)
+from dash import Dash, Input, Output, State, dcc, html
+
+from offers.companies.visionite import calc_compensation
 from web.callbacks.utils import run_monte_carlo_simulation
 from web.ids import Ids
 from web.layout.charts import (
@@ -14,7 +13,6 @@ from web.layout.charts import (
     build_return_dist_plot,
 )
 from web.layout.tables import build_total_compensation_table
-
 
 MONTHLY_BILLABLE_HOURS = 134.4
 N_SIMULATIONS = 10000
@@ -58,7 +56,7 @@ def register_callbacks(
         Input(Ids.MONTE_CARLO_RESULTS_STORE, "data"),
         prevent_initial_call=True,
     )
-    def plot_monte_carlo_paths(data: dict):
+    def plot_monte_carlo_paths(data: dict) -> dcc.Graph:
         percentiles = data["percentiles"]
         p5 = np.asarray(percentiles["p5"])
         p50 = np.asarray(percentiles["p50"])
@@ -71,7 +69,7 @@ def register_callbacks(
         Input(Ids.MONTE_CARLO_RESULTS_STORE, "data"),
         prevent_initial_call=True,
     )
-    def plot_final_income_distribution(data: dict):
+    def plot_final_income_distribution(data: dict) -> dcc.Graph:
         arr_immediate = np.asarray(data["immediate"])
         arr_deferred = np.asarray(data["deferred"])
         return build_final_income_plot(immediate=arr_immediate, deferred=arr_deferred)
@@ -82,7 +80,7 @@ def register_callbacks(
         Input(Ids.MONTE_CARLO_RESULTS_STORE, "data"),
         prevent_initial_call=True,
     )
-    def plot_advantage_plot(data: dict):
+    def plot_advantage_plot(data: dict) -> dcc.Graph:
         arr = np.asarray(data["advantage"])
         return build_final_advantage_plot(arr=arr)
 
@@ -120,14 +118,14 @@ def register_callbacks(
         prevent_initial_call=True,
     )
     def write_mc_res_to_store(
-        n_clicks,
-        hourly_rate,
-        pension,
-        monthly_salary_investment,
-        monthly_mean_return,
-        monthly_volatility,
-        months_between_withdrawals,
-        n_months,
+        n_clicks: int,
+        hourly_rate: int,
+        pension: int,
+        monthly_salary_investment: int,
+        monthly_mean_return: float,
+        monthly_volatility: float,
+        months_between_withdrawals: int,
+        n_months: int,
     ) -> dict:
         """Run the Monte Carlo simulation and write the results to the dcc.Store."""
         return run_monte_carlo_simulation(
