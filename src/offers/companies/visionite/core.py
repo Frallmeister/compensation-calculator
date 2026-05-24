@@ -62,7 +62,13 @@ class TotalCompensation:
         Console().print(table)
 
 
-def calc_compensation(income: int, pension: int, pot: int, car: int = 0) -> TotalCompensation:
+def calc_compensation(
+    income: int,
+    pension: int,
+    pot: int,
+    car: int = 0,
+    table_no: int = 33,
+) -> TotalCompensation:
     """Calculate the gross salary.
 
     The compensation is based on the invoiced income, pension provision, saved pot
@@ -96,7 +102,7 @@ def calc_compensation(income: int, pension: int, pot: int, car: int = 0) -> Tota
 
     holiday_provision = 0.144 * gs
     employers_fee = 0.3142 * (gs + holiday_provision)
-    table_tax = tax_for_salary(gs)
+    table_tax = tax_for_salary(gs, table_no=table_no)
     net_salary = gs - table_tax
     return TotalCompensation(
         income=income,
