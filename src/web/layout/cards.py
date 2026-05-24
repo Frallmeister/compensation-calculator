@@ -40,6 +40,41 @@ def numeric_input_group(
         ],
     )
 
+def numeric_dropdown_group(
+    label: str,
+    input_id: str,
+    value: float,
+    options: list,
+    clearable: bool = False,
+    searchable: bool = False,
+    suffix: str | None = None,
+) -> html.Div:
+    return html.Div(
+        className="control-group",
+        children=[
+            html.Label(
+                label,
+                htmlFor=input_id,
+                className="control-label",
+            ),
+            html.Div(
+                className="input-row",
+                children=[
+                    dcc.Dropdown(
+                        id=input_id,
+                        className="input-field",
+                        options=options,
+                        value=value,
+                        clearable=clearable,
+                        searchable=searchable,
+                    ),
+                    html.Span(suffix, className="input-suffix") if suffix else None,
+                ],
+            ),
+        ],
+    )
+
+
 def control_panel() -> html.Div:
     return html.Div(
         [
@@ -76,6 +111,14 @@ def control_panel() -> html.Div:
                                 step=1,
                                 suffix="kr",
                             ),
+
+                            numeric_dropdown_group(
+                                label="Tax table",
+                                input_id=Ids.TAX_TABLE_DROPDOWN,
+                                value=33,
+                                options=list(range(29, 43)),
+                                suffix=" ",
+                            ),
                             dcc.Button(
                                 "Update table",
                                 id=Ids.TABLE_BUTTON,
@@ -88,14 +131,6 @@ def control_panel() -> html.Div:
                     html.Div(
                         className="mc-control-block",
                         children=[
-                            numeric_input_group(
-                                label="Monthly investment:",
-                                input_id=Ids.MONTHLY_INVESTMENT,
-                                value=2500,
-                                min_value=0,
-                                step=1,
-                                suffix="kr",
-                            ),
                             numeric_input_group(
                                 label="Monthly mean return:",
                                 input_id=Ids.MONTHLY_RETURN,

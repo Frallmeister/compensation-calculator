@@ -26,16 +26,20 @@ def register_callbacks(
     @app.callback(
         Output(Ids.COMPENSATION_TABLE, "children"),
         Input(Ids.TABLE_BUTTON, "n_clicks"),
+        Input(Ids.SIMULATION_BUTTON, "n_clicks"),
         State(Ids.HOURLY_RATE, "value"),
         State(Ids.PENSION, "value"),
         State(Ids.DEFERRED_INCOME, "value"),
+        State(Ids.TAX_TABLE_DROPDOWN, "value"),
         prevent_initial_call=True,
     )
     def update_compensation_table(
-        n_clicks: int,
+        n_clicks_table: int,
+        n_clicks_sim: int,
         hourly_rate: int,
         pension: int,
         deferred: int,
+        table_no: int,
     ) -> html.Table:
         total_income = round(MONTHLY_BILLABLE_HOURS * hourly_rate)
         total_compensation = calc_compensation(
@@ -43,6 +47,7 @@ def register_callbacks(
             pension=pension,
             pot=deferred,
             car=0,
+            table_no=table_no,
         )
 
         return build_total_compensation_table(total_compensation)
@@ -107,7 +112,7 @@ def register_callbacks(
         Input(Ids.SIMULATION_BUTTON, "n_clicks"),
         State(Ids.HOURLY_RATE, "value"),
         State(Ids.PENSION, "value"),
-        State(Ids.MONTHLY_INVESTMENT, "value"),
+        State(Ids.DEFERRED_INCOME, "value"),
         State(Ids.MONTHLY_RETURN, "value"),
         State(Ids.MONTHLY_VOLATILITY, "value"),
         State(Ids.MONTHS_TO_WITHDRAWAL, "value"),
