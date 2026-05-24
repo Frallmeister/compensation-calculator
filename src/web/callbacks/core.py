@@ -7,7 +7,11 @@ from offers.companies.visionite import (
 )
 from web.callbacks.utils import run_monte_carlo_simulation
 from web.ids import Ids
-from web.layout.charts import build_final_advantage_plot, build_return_dist_plot
+from web.layout.charts import (
+    build_final_advantage_plot,
+    build_final_income_plot,
+    build_return_dist_plot,
+)
 from web.layout.tables import build_total_compensation_table
 
 
@@ -41,6 +45,17 @@ def register_callbacks(
         )
 
         return build_total_compensation_table(total_compensation)
+
+
+    @app.callback(
+        Output(Ids.MONTE_CARLO_FINALS, "children"),
+        Input(Ids.MONTE_CARLO_RESULTS_STORE, "data"),
+        prevent_initial_call=True,
+    )
+    def plot_final_income_distribution(data: dict):
+        arr_immediate = np.asarray(data["immediate"])
+        arr_deferred = np.asarray(data["deferred"])
+        return build_final_income_plot(immediate=arr_immediate, deferred=arr_deferred)
 
 
     @app.callback(

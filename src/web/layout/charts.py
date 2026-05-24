@@ -77,6 +77,49 @@ def apply_card_figure_style(fig: go.Figure) -> go.Figure:
     return fig
 
 
+def build_final_income_plot(immediate: np.ndarray, deferred: np.ndarray) -> dcc.Graph:
+    # Calculate cumulative histogram
+
+    fig = go.Figure()
+    fig.add_histogram(
+        x=immediate / 1000,
+        name="Immediate",
+    )
+    fig.add_histogram(
+        x=deferred / 1000,
+        name="Deferred",
+    )
+
+    fig.update_layout(barmode="overlay")
+    fig.update_traces(
+        opacity=0.75,
+        histnorm="probability",
+        hovertemplate=(
+            "Value: %{x:,.0f} tkr<br>"
+            "<extra></extra>"
+        ),
+    )
+
+    fig.update_xaxes(title_text="Final net income (tkr)")
+
+    fig.update_yaxes(
+        title_text="Density",
+        # tickformat=".0%",
+    )
+
+    fig = apply_card_figure_style(fig)
+    return dcc.Graph(
+        className="card-graph",
+        figure=fig,
+        mathjax=True,
+        responsive=True,
+        config={
+            "responsive": True,
+            "displaylogo": False,
+        },
+    )
+
+
 def build_final_advantage_plot(arr: np.ndarray) -> dcc.Graph:
     # Calculate cumulative histogram
     x = np.sort(arr) * 1e-3
@@ -139,8 +182,8 @@ def build_final_advantage_plot(arr: np.ndarray) -> dcc.Graph:
 def build_return_dist_plot(mean: float, std: float) -> dcc.Graph:
     """Plot the figure that shows how the stochastic monthly return is distributed."""
     xwidth = 3 * std
-    xmin = min(mean - xwidth, -20)
-    xmax = max(mean + xwidth, 20)
+    xmin = min(mean - xwidth, -10)
+    xmax = max(mean + xwidth, 10)
 
     x = np.linspace(xmin, xmax, 1000)
     y = stats.norm.cdf(x, loc=mean, scale=std)
