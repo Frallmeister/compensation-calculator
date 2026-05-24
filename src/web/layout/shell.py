@@ -1,7 +1,8 @@
 """Top-level Dash layout."""
 
-from dash import html
+from dash import dcc, html
 
+from web.ids import Ids
 from web.layout import cards
 
 
@@ -9,6 +10,10 @@ def create_layout() -> html.Div:
     """Create the top-level app layout."""
     return html.Div(
         [
+            dcc.Store(
+                id=Ids.MONTE_CARLO_RESULTS_STORE,
+                storage_type="memory",
+            ),
             html.Header(
                 [
                     html.H1("Compensation Calculator", className="site-title"),

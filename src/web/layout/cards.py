@@ -154,7 +154,10 @@ def monte_carlo_timeseries() -> html.Div:
     return html.Div(
         [
             html.H1("Monte Carlo timeseries"),
-            html.Div(""),
+            html.Div(
+                id=Ids.MONTE_CARLO_SIMULATION_PATHS,
+                className="graph-container",
+            ),
         ],
         className="card card-mc-timeseries",
     )
@@ -163,7 +166,10 @@ def final_return_distributions() -> html.Div:
     return html.Div(
         [
             html.H1("Final income distributions"),
-            html.Div(""),
+            html.Div(
+                id=Ids.MONTE_CARLO_FINALS,
+                className="graph-container",
+            ),
         ],
         className="card card-mc-final-dist",
     )
@@ -172,7 +178,10 @@ def final_advantage() -> html.Div:
     return html.Div(
         [
             html.H1("Strategy advantage"),
-            html.Div(""),
+            html.Div(
+                id=Ids.MONTE_CARLO_ADVANTAGE,
+                className="graph-container",
+            ),
         ],
         className="card card-mc-advantage",
     )
