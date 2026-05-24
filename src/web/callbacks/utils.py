@@ -1,10 +1,11 @@
 """Functions and utilities used in the callbacks that doesn't fit anywhere else."""
 
+import numpy as np
+
 from offers.companies.visionite import (
     SimulationConfig,
     StrategyMonteCarlo,
 )
-import numpy as np
 
 
 def run_monte_carlo_simulation(

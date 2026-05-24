@@ -230,19 +230,29 @@ class StrategyMonteCarlo:
 
             if is_withdrawing_month:
                 pot = 0
-                portfolio += (1 - 0.54) * deposit
+                added_income = deposit
                 deposit = 0.0
             else:
                 pot = cfg.monthly_salary_investment
                 deposit += cfg.monthly_salary_investment
+                added_income = 0
 
-            compensation = calc_compensation(
-                income=cfg.total_income,
+            actual_compensation = calc_compensation(
+                income=int(cfg.total_income + added_income),
                 pension=cfg.pension,
                 pot=pot,
                 car=cfg.car_cost,
             )
+
+            base_net_salary = calc_compensation(
+                income=cfg.total_income,
+                pension=cfg.pension,
+                pot=pot,
+                car=cfg.car_cost,
+            ).net_salary
             portfolio *= profits[imonth]
-            accumulated_salary += compensation.net_salary
+            portfolio += actual_compensation.net_salary - base_net_salary
+
+            accumulated_salary += actual_compensation.net_salary
             total_savings[imonth] = accumulated_salary + portfolio
         return total_savings
