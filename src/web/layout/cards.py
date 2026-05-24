@@ -89,14 +89,6 @@ def control_panel() -> html.Div:
                         className="mc-control-block",
                         children=[
                             numeric_input_group(
-                                label="Monthly investment:",
-                                input_id=Ids.MONTHLY_INVESTMENT,
-                                value=2500,
-                                min_value=0,
-                                step=1,
-                                suffix="kr",
-                            ),
-                            numeric_input_group(
                                 label="Monthly mean return:",
                                 input_id=Ids.MONTHLY_RETURN,
                                 value=1.5,
