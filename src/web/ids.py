@@ -12,6 +12,7 @@ class Ids:
     HOURLY_RATE = "hourly-rate-id"
     PENSION = "pension-id"
     DEFERRED_INCOME = "deferred-id"
+    TAX_TABLE_DROPDOWN = "tax-table-dropdown"
     TABLE_BUTTON = "table-button-id"
     MONTHLY_INVESTMENT = "monthly-investment-id"
     MONTHLY_RETURN = "monthly-return-id"

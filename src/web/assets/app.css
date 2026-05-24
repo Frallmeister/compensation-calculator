@@ -182,8 +182,8 @@ body {
 
 .input-field {
     min-width: 100px;
-    height: 30px;
-    padding: 3px 5px;
+    height: 35px;
+    padding: 2px 5px;
     font-size: 0.9rem;
 
     border: 1px solid var(--muted);
