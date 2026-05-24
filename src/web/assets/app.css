@@ -110,16 +110,25 @@ body {
 .card-mc-timeseries {
   grid-column: 7 / 13;
   grid-row: 1 / 6;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .card-mc-final-dist {
   grid-column: 4 / 7;
   grid-row: 6 / 10;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .card-mc-advantage {
   grid-column: 7 / 10;
   grid-row: 6 / 10;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .card-mc-return-dist {
@@ -134,7 +143,7 @@ body {
   flex: 1;
   min-height: 0;
   width: 100%;
-  padding: 10px 10px;
+  padding: 1px 10px;
 }
 
 .card-graph {
