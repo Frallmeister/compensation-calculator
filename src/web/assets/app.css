@@ -287,3 +287,201 @@ body {
 .comp-table-row-bold .comp-table-amount {
   font-weight: 700;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Responsive layout                                                           */
+/* -------------------------------------------------------------------------- */
+
+/*
+Desktop:
+- Keep the existing 12-column dashboard layout.
+
+Tablet:
+- Collapse to a 2-column card layout.
+- Let rows size naturally instead of forcing the desktop 9-row structure.
+
+Phone:
+- Collapse to one column.
+- Stack controls vertically.
+- Give graphs explicit usable heights.
+*/
+
+@media (max-width: 1100px) {
+  :root {
+    --container-padding: 16px;
+  }
+
+  .site-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    align-items: start;
+    gap: 14px;
+  }
+
+  .card-widgets,
+  .card-table,
+  .card-mc-timeseries,
+  .card-mc-final-dist,
+  .card-mc-advantage,
+  .card-mc-return-dist {
+    grid-column: auto;
+    grid-row: auto;
+    min-width: 0;
+  }
+
+  .card-widgets {
+    grid-column: 1 / -1;
+  }
+
+  .card-mc-timeseries {
+    grid-column: 1 / -1;
+  }
+
+  .graph-container {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --container-padding: 10px;
+  }
+
+  .site-title {
+    padding: 14px 10px;
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  .site-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px var(--container-padding);
+  }
+
+  .card {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    min-width: 0;
+  }
+
+  .card h1 {
+    font-size: 0.95rem;
+    padding: 8px 0;
+    margin-bottom: 8px;
+  }
+
+  .control-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .control-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 8px 0;
+  }
+
+  .control-label {
+    font-size: 0.9rem;
+  }
+
+  .input-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .input-field {
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .input-suffix {
+    min-width: 34px;
+    align-self: center;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .button {
+    width: 100%;
+    height: 40px;
+    margin: 10px 0 0;
+    font-size: 1rem;
+  }
+
+  .mc-control-block {
+    margin-top: 10px;
+  }
+
+  .card-table {
+    overflow-x: auto;
+  }
+
+  .comp-table {
+    min-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .comp-table-label,
+  .comp-table-amount {
+    padding: 4px 6px;
+  }
+
+  .comp-table-amount {
+    white-space: nowrap;
+  }
+
+  .graph-container {
+    min-height: 280px;
+    padding: 0;
+  }
+
+  .card-graph {
+    height: 280px;
+    min-height: 280px;
+  }
+
+  .site-footer-text {
+    padding: 12px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .card {
+    padding: 8px 10px;
+  }
+
+  .graph-container {
+    min-height: 240px;
+  }
+
+  .card-graph {
+    height: 240px;
+    min-height: 240px;
+  }
+
+  .comp-table {
+    font-size: 0.8rem;
+  }
+
+  .comp-table-label,
+  .comp-table-amount {
+    padding: 3px 4px;
+  }
+}

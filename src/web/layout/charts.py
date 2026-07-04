@@ -154,6 +154,7 @@ def build_mc_paths_plot(p5: np.ndarray, p50: np.ndarray, p95: np.ndarray) -> dcc
         figure=fig,
         mathjax=True,
         responsive=True,
+        style={"width": "100%", "height": "100%"},
         config={
             "responsive": True,
             "displaylogo": False,
@@ -193,6 +194,7 @@ def build_final_income_plot(immediate: np.ndarray, deferred: np.ndarray) -> dcc.
         figure=fig,
         mathjax=True,
         responsive=True,
+        style={"width": "100%", "height": "100%"},
         config={
             "responsive": True,
             "displaylogo": False,
@@ -252,6 +254,7 @@ def build_final_advantage_plot(arr: np.ndarray) -> dcc.Graph:
         figure=fig,
         mathjax=True,
         responsive=True,
+        style={"width": "100%", "height": "100%"},
         config={
             "responsive": True,
             "displaylogo": False,
@@ -320,6 +323,7 @@ def build_return_dist_plot(mean: float, std: float) -> dcc.Graph:
         figure=fig,
         mathjax=True,
         responsive=True,
+        style={"width": "100%", "height": "100%"},
         config={
             "responsive": True,
             "displaylogo": False,
