@@ -3,13 +3,16 @@ name: Production Docker Gate
 on:
   pull_request:
     branches:
-      - production
+      - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       ref:
         description: Git ref (branch, tag, or SHA) to test
         required: false
-        default: production
+        default: main
 
 jobs:
   docker-smoke:
