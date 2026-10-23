@@ -117,6 +117,7 @@ def register_callbacks(
         State(Ids.MONTHLY_VOLATILITY, "value"),
         State(Ids.MONTHS_TO_WITHDRAWAL, "value"),
         State(Ids.MONTHS_TO_SIMULATE, "value"),
+        State(Ids.TAX_TABLE_DROPDOWN, "value"),
         prevent_initial_call=True,
     )
     def write_mc_res_to_store(
@@ -129,6 +130,7 @@ def register_callbacks(
         monthly_volatility: float,
         months_between_withdrawals: int,
         n_months: int,
+        table_no: int,
     ) -> dict:
         """Run the Monte Carlo simulation and write the results to the dcc.Store."""
         return run_monte_carlo_simulation(
@@ -140,4 +142,5 @@ def register_callbacks(
             months_between_withdrawals=months_between_withdrawals,
             n_months=n_months,
             n_simulations=N_SIMULATIONS,
+            table_no=table_no,
         )

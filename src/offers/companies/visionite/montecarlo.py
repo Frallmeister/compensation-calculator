@@ -19,6 +19,7 @@ class SimulationConfig:
     months_between_withdrawals: int
     n_months: int
     n_simulations: int
+    table_no: int = 33
 
 
 @dataclass(frozen=True)
@@ -203,6 +204,7 @@ class StrategyMonteCarlo:
             pension=cfg.pension,
             pot=0,
             car=cfg.car_cost,
+            table_no=cfg.table_no,
         )
         net_salary = compensation.net_salary
         net_salary_after_savings = (net_salary - cfg.monthly_salary_investment)
@@ -242,6 +244,7 @@ class StrategyMonteCarlo:
                 pension=cfg.pension,
                 pot=pot,
                 car=cfg.car_cost,
+                table_no=cfg.table_no,
             )
 
             base_net_salary = calc_compensation(
@@ -249,6 +252,7 @@ class StrategyMonteCarlo:
                 pension=cfg.pension,
                 pot=pot,
                 car=cfg.car_cost,
+                table_no=cfg.table_no,
             ).net_salary
             portfolio *= profits[imonth]
             portfolio += actual_compensation.net_salary - base_net_salary

@@ -27,6 +27,7 @@ def run_monte_carlo_simulation(
     months_between_withdrawals: int,
     n_months: int,
     n_simulations: int,
+    table_no: int = 33,
 ) -> dict:
     """Run the Monte carlo simulation and return a dict with results for dcc.Store."""
     config = SimulationConfig(
@@ -39,6 +40,7 @@ def run_monte_carlo_simulation(
         months_between_withdrawals=months_between_withdrawals,
         n_months=n_months,
         n_simulations=n_simulations,
+        table_no=table_no,
     )
 
     sim = StrategyMonteCarlo(config)
