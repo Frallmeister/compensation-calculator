@@ -2,6 +2,11 @@ name: Commit Gate
 
 on:
   pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
 
 jobs:
   dash-smoke:
