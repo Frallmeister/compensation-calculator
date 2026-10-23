@@ -10,6 +10,7 @@ class Ids:
 
     # Control card
     HOURLY_RATE = "hourly-rate-id"
+    CONSULTANT_SHARE = "consultant-share-id"
     PENSION = "pension-id"
     DEFERRED_INCOME = "deferred-id"
     TAX_TABLE_DROPDOWN = "tax-table-dropdown"

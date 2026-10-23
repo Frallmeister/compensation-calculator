@@ -93,7 +93,15 @@ def control_panel() -> html.Div:
                                 step=1,
                                 suffix="kr/h",
                             ),
-
+                            numeric_input_group(
+                                label="Your share:",
+                                input_id=Ids.CONSULTANT_SHARE,
+                                value=80,
+                                min_value=0,
+                                max_value=100,
+                                step=1,
+                                suffix="%",
+                            ),
                             numeric_input_group(
                                 label="Pension:",
                                 input_id=Ids.PENSION,

@@ -4,7 +4,7 @@ import numpy as np
 from dash import Dash, Input, Output, State, dcc, html
 
 from offers.companies.visionite import calc_compensation
-from web.callbacks.utils import run_monte_carlo_simulation
+from web.callbacks.utils import calculate_monthly_income, run_monte_carlo_simulation
 from web.ids import Ids
 from web.layout.charts import (
     build_final_advantage_plot,
@@ -14,7 +14,6 @@ from web.layout.charts import (
 )
 from web.layout.tables import build_total_compensation_table
 
-MONTHLY_BILLABLE_HOURS = 134.4
 N_SIMULATIONS = 10000
 
 def register_callbacks(
@@ -26,6 +25,7 @@ def register_callbacks(
         Input(Ids.TABLE_BUTTON, "n_clicks"),
         Input(Ids.SIMULATION_BUTTON, "n_clicks"),
         State(Ids.HOURLY_RATE, "value"),
+        State(Ids.CONSULTANT_SHARE, "value"),
         State(Ids.PENSION, "value"),
         State(Ids.DEFERRED_INCOME, "value"),
         State(Ids.TAX_TABLE_DROPDOWN, "value"),
@@ -35,11 +35,12 @@ def register_callbacks(
         n_clicks_table: int,
         n_clicks_sim: int,
         hourly_rate: int,
+        consultant_share: float | None,
         pension: int,
         deferred: int,
         table_no: int,
     ) -> html.Table:
-        total_income = round(MONTHLY_BILLABLE_HOURS * hourly_rate)
+        total_income = calculate_monthly_income(hourly_rate, consultant_share)
         total_compensation = calc_compensation(
             income=total_income,
             pension=pension,
@@ -109,6 +110,7 @@ def register_callbacks(
         Output(Ids.MONTE_CARLO_RESULTS_STORE, "data"),
         Input(Ids.SIMULATION_BUTTON, "n_clicks"),
         State(Ids.HOURLY_RATE, "value"),
+        State(Ids.CONSULTANT_SHARE, "value"),
         State(Ids.PENSION, "value"),
         State(Ids.DEFERRED_INCOME, "value"),
         State(Ids.MONTHLY_RETURN, "value"),
@@ -120,6 +122,7 @@ def register_callbacks(
     def write_mc_res_to_store(
         n_clicks: int,
         hourly_rate: int,
+        consultant_share: float | None,
         pension: int,
         monthly_salary_investment: int,
         monthly_mean_return: float,
@@ -129,7 +132,7 @@ def register_callbacks(
     ) -> dict:
         """Run the Monte Carlo simulation and write the results to the dcc.Store."""
         return run_monte_carlo_simulation(
-            total_income=round(MONTHLY_BILLABLE_HOURS * hourly_rate),
+            total_income=calculate_monthly_income(hourly_rate, consultant_share),
             pension=pension,
             monthly_salary_investment=monthly_salary_investment,
             monthly_mean_return=monthly_mean_return / 100,

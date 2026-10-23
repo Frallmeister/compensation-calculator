@@ -162,10 +162,11 @@ body {
 .control-group {
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     gap: 6px;
     font-size: 0.9rem;
-    padding: 10px 0;
+    padding: 6px 0;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -181,8 +182,9 @@ body {
 }
 
 .input-field {
-    min-width: 100px;
-    height: 35px;
+    width: 96px;
+    min-width: 0;
+    height: 30px;
     padding: 2px 5px;
     font-size: 0.9rem;
 
@@ -199,6 +201,11 @@ body {
         box-shadow 120ms ease;
 }
 
+.input-field .dash-dropdown-trigger {
+    min-height: 0;
+    padding: 0 5px;
+}
+
 .input-field:focus {
     outline: none;
     border-color: var(--Dash-Fill-Interactive-Strong, #636efa);
@@ -210,7 +217,7 @@ body {
 }
 
 .input-suffix {
-    min-width: 40px;
+    min-width: 32px;
     /* font-size: 0.85rem; */
     color: var(--muted);
 }
@@ -247,7 +254,7 @@ body {
 }
 
 .mc-control-block {
-  margin-top: 20px;
+  margin-top: 12px;
 }
 
 
@@ -383,8 +390,8 @@ Phone:
   .control-group {
     flex-direction: column;
     align-items: stretch;
-    gap: 6px;
-    padding: 8px 0;
+    gap: 4px;
+    padding: 6px 0;
   }
 
   .control-label {
@@ -401,7 +408,7 @@ Phone:
   .input-field {
     width: 100%;
     min-width: 0;
-    height: 38px;
+    height: 34px;
     font-size: 1rem;
   }
 

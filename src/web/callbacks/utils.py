@@ -1,11 +1,21 @@
 """Functions and utilities used in the callbacks that doesn't fit anywhere else."""
 
 import numpy as np
+from dash.exceptions import PreventUpdate
 
 from offers.companies.visionite import (
     SimulationConfig,
     StrategyMonteCarlo,
 )
+
+MONTHLY_BILLABLE_HOURS = 8 * 21
+
+
+def calculate_monthly_income(hourly_rate: int, consultant_share: float | None) -> int:
+    """Apply the consultant's share to revenue from a full working month."""
+    if consultant_share is None or not 0 <= consultant_share <= 100:
+        raise PreventUpdate
+    return round(MONTHLY_BILLABLE_HOURS * hourly_rate * consultant_share / 100)
 
 
 def run_monte_carlo_simulation(
