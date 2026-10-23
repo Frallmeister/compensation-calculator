@@ -37,6 +37,12 @@ uv run offers-dash
 
 Open `http://localhost:8050`.
 
+The control panel lets you set the hourly rate and **Your share**, the percentage
+of invoiced revenue available for your compensation. Your share starts at 80%
+(an 80/20 split). Both the compensation table and the simulation use
+`hourly rate × 8 hours × 21 days × your share / 100`, before compensation costs
+and taxes. Use **Update table** or **Run simulation** to apply changed inputs.
+
 ## Run tests
 
 Run the unit tests from the repository root:
